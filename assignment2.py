@@ -21,11 +21,14 @@ def downloadData(url):
 def processData(file_content):
     """
     Takes the contents of the file as the first parameter, processes the file line by line, 
-    and returns a dictionary that maps a person’s ID to a tuple of the form (name, birthday).
+    and returns a dictionary that maps a persons ID to a tuple of the form (name, birthday).
     """
     result_dict = {}
     header = True
-    for line in file_content.split("\n"):
+    for i, line in enumerate(file_content.split("\n")):
+        if i > 5:
+            break 
+        
         if header:
             header = False
             continue
@@ -34,8 +37,8 @@ def processData(file_content):
         id = int(id_str)
 
         # make sure you handle bad dates...
-        birthday = datetime.datetime.strptime(birthday_str, "%d/%m/%Y")
 
+        birthday = datetime.datetime.strptime(birthday_str, "%d/%m/%Y")
         result_dict[id] = (name, birthday)
 
     # parse data using datetime.datetime.strptime(s, "%d/%m/%Y")
@@ -58,12 +61,15 @@ def main(url):
     # Part II - Download Data
     file_data = downloadData(url)
 
+    print(file_data)
+
     # Part III Process Data
     person_dict = processData(file_data)
 
     # Make sure to ask the User for an id
     # but as an example, let's try 1
     user_id = 1
+    #displayPerson(user_id, person_dict)
     print("Here are the test result:")
     print(person_dict[user_id])
     print(person_dict[2])
